@@ -1,0 +1,30 @@
+bits = input('Enter the bit stream');
+
+bitrate = 1;
+voltage = 5;
+
+samplingRate = 1000;
+samplingTime = 1/samplingRate;
+
+endTime = length(bits)/bitrate;
+time = 0:samplingTime:endTime;
+
+index = 1;
+x = zeros(1,length(time));
+for i = 1:length(time)
+    if bits(index) == 1
+        x(i) = -voltage;
+    else
+        x(i) = voltage;
+    end
+    if time(i)*bitrate >= index-bitrate/2
+        x(i) = -x(i);
+    end
+    if time(i)*bitrate >= index
+        index = index+1;
+    end
+end
+
+plot(time, x, "LineWidth", 1);
+axis([0 endTime -voltage-5 voltage+5]);
+grid on;
